@@ -1,3 +1,4 @@
+import 'package:admin_dashboard/api/flutter_web_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,8 +17,9 @@ import 'package:admin_dashboard/ui/layauts/splash/splash_layout.dart';
 void main() async{
 
   await LocalStorage.configurePrefs();
+  FlutterWebApi.configureDio();
   Flurorouter.configureRoutes();
-   runApp(AppState());
+  runApp(AppState());
 
 }
 

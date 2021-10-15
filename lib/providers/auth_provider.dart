@@ -1,7 +1,12 @@
+import 'package:admin_dashboard/models/http/authresponse.dart';
+import 'package:flutter/cupertino.dart';
+
+import 'package:admin_dashboard/api/flutter_web_api.dart';
+
 import 'package:admin_dashboard/routes/router.dart';
+
 import 'package:admin_dashboard/services/local_storege.dart';
 import 'package:admin_dashboard/services/navigation_servide.dart';
-import 'package:flutter/cupertino.dart';
 
 enum AuthStatus{
   cheking,
@@ -13,6 +18,7 @@ class AuthProvider extends ChangeNotifier{
 
   String? _token;
   AuthStatus authStatus = AuthStatus.cheking;
+  Usuario? user;
 
   AuthProvider(){
     this.isAutenticated();
@@ -51,6 +57,35 @@ class AuthProvider extends ChangeNotifier{
     authStatus = AuthStatus.authenticated;
     notifyListeners();
     return true;
+
+  }
+
+  register( String email, String password, String name ){
+
+    final data = {
+      'nombre': name,
+      'correo': email,
+      'password': password
+    };
+
+    FlutterWebApi.post('/usuarios', data).then(
+      (json){
+        print(json);
+        final authResponse = AuthResponse.fromMap(json);
+        this.user = authResponse.usuario;
+
+        authStatus = AuthStatus.authenticated;
+        LocalStorage.prefs.setString( 'token', authResponse.token );
+        NavigationService.replaceTo(Flurorouter.dashboardRoute);
+        notifyListeners();
+
+      }
+      
+    ).catchError((e){
+      print('Error en $e');
+      //TODO: Mostrar notificacion de error
+    });
+
 
   }
 

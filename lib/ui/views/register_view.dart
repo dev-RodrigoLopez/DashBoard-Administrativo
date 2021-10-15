@@ -1,11 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:admin_dashboard/providers/auth_provider.dart';
 import 'package:admin_dashboard/providers/register_form_provider.dart';
+
 import 'package:admin_dashboard/routes/router.dart';
+
 import 'package:admin_dashboard/ui/buttons/custom_outlined_button.dart';
 import 'package:admin_dashboard/ui/buttons/links_text.dart';
 import 'package:admin_dashboard/ui/inputs/custom_inputs.dart';
+
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class RegisterView extends StatelessWidget {
 
@@ -90,7 +95,19 @@ class RegisterView extends StatelessWidget {
 
                     CustomOutlineBotton(
                       onPressed: (){
-                        registerformProvider.validateForm();
+                        final validForm = registerformProvider.validateForm();
+
+                        if( !validForm ) return;
+
+                        //TODO: AuthProvider register
+                        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                        authProvider.register(
+                          registerformProvider.email, 
+                          registerformProvider.password, 
+                          registerformProvider.nombre
+                        );
+
+
                       },
                       texto: 'Crear cuenta',
                       isFilled: false,
