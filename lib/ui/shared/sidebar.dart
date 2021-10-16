@@ -1,5 +1,6 @@
 import 'dart:js';
 
+import 'package:admin_dashboard/providers/auth_provider.dart';
 import 'package:admin_dashboard/providers/sidemenu_provider.dart';
 import 'package:admin_dashboard/routes/router.dart';
 import 'package:admin_dashboard/services/navigation_servide.dart';
@@ -44,7 +45,14 @@ class Sidebar extends StatelessWidget {
 
           MenuItem( text: 'Orders', icon: Icons.shopping_cart_outlined, isActive: false, onPressed: (){} ),
           MenuItem( text: 'Analitic', icon: Icons.show_chart_outlined, isActive: false, onPressed: (){} ),
-          MenuItem( text: 'Categories', icon: Icons.layers_clear_outlined, isActive: false, onPressed: (){} ),
+          MenuItem( 
+            text: 'Categories', 
+            icon: Icons.layers_clear_outlined, 
+            isActive: sideMenuProvider.currentPage == Flurorouter.categoriesRoute,
+            onPressed: (){
+               navigateTo( Flurorouter.categoriesRoute );
+            } 
+          ),
           MenuItem( text: 'Products', icon: Icons.dashboard_customize_outlined, isActive: false, onPressed: (){} ),
           MenuItem( text: 'Discount', icon: Icons.attach_email_outlined, isActive: false, onPressed: (){} ),
           MenuItem( text: 'Customers', icon: Icons.people_alt_outlined, isActive: false, onPressed: (){} ),
@@ -72,7 +80,13 @@ class Sidebar extends StatelessWidget {
           
            SizedBox( height: 50 ),
           TextSeparator( text: 'Exit' ),  
-          MenuItem( text: 'Logout', icon: Icons.exit_to_app_outlined, isActive: false, onPressed: (){} ),          
+          MenuItem( 
+            text: 'Logout', 
+            icon: Icons.exit_to_app_outlined, 
+            isActive: false, 
+            onPressed: (){
+              Provider.of<AuthProvider>(context, listen: false).logout();
+            } ),          
 
         ],
       ),

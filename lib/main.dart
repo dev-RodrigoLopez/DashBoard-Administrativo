@@ -1,14 +1,17 @@
-import 'package:admin_dashboard/api/flutter_web_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:admin_dashboard/api/flutter_web_api.dart';
+
 import 'package:admin_dashboard/providers/auth_provider.dart';
 import 'package:admin_dashboard/providers/sidemenu_provider.dart';
+import 'package:admin_dashboard/providers/categorias_provider.dart';
 
 import 'package:admin_dashboard/routes/router.dart';
 
 import 'package:admin_dashboard/services/local_storege.dart';
 import 'package:admin_dashboard/services/navigation_servide.dart';
+import 'package:admin_dashboard/services/notifications_service.dart';
 
 import 'package:admin_dashboard/ui/layauts/auth/aurh_layout.dart';
 import 'package:admin_dashboard/ui/layauts/dashboard/dashboard_layout.dart';
@@ -30,7 +33,8 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider( create: ( _ ) => AuthProvider(), lazy: false, ),
-        ChangeNotifierProvider( create: ( _ ) => SideMenuPRovider(), lazy: false, )
+        ChangeNotifierProvider( create: ( _ ) => SideMenuPRovider(), lazy: false, ),
+        ChangeNotifierProvider( create: ( _ ) => CategoriasProvider() )
       ],
       child: MyApp(),
     );
@@ -46,6 +50,7 @@ class MyApp extends StatelessWidget {
      initialRoute: '/',
      onGenerateRoute: Flurorouter.router.generator,
      navigatorKey: NavigationService.navigatorKey,
+     scaffoldMessengerKey: NotificacionsService.messengerKey,
      builder: ( context, child){
 
        final authProvider = Provider.of<AuthProvider>(context);

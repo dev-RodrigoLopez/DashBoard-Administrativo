@@ -6,6 +6,7 @@ import 'package:admin_dashboard/api/flutter_web_api.dart';
 import 'package:admin_dashboard/routes/router.dart';
 
 import 'package:admin_dashboard/services/local_storege.dart';
+import 'package:admin_dashboard/services/notifications_service.dart';
 import 'package:admin_dashboard/services/navigation_servide.dart';
 
 enum AuthStatus{
@@ -26,39 +27,35 @@ class AuthProvider extends ChangeNotifier{
 
   login( String email, String password ){
 
-    //TODO:PEticion http
-    _token = 'abcdefjhijklmno';
-    print('Almacenar JWT');
-    LocalStorage.prefs.setString( 'token', this._token! );
+   final data = {
+      'correo': email,
+      'password': password
+    };
 
-    authStatus = AuthStatus.authenticated;
-    notifyListeners();
+    FlutterWebApi.post('/auth/login', data).then(
+      (json){
+        print(json);
+        final authResponse = AuthResponse.fromMap(json);
+        this.user = authResponse.usuario;
 
-    NavigationService.replaceTo(Flurorouter.dashboardRoute);
+        authStatus = AuthStatus.authenticated;
+        LocalStorage.prefs.setString( 'token', authResponse.token );
+        NavigationService.replaceTo(Flurorouter.dashboardRoute);
 
-    // isAutenticated();
+        FlutterWebApi.configureDio;
 
-  }
+        notifyListeners();
 
-  Future<bool> isAutenticated()async{
-
-    final token = LocalStorage.prefs.getString('token');
-
-    if( token == null ){
-      authStatus = AuthStatus.notAuthenticated;
-      notifyListeners();
-      return false;
-    }
-
-    //TODO: Ir al backend y comprobar si el JWT es válido
-
-    await Future.delayed(Duration( milliseconds: 1000 ));
-
-    authStatus = AuthStatus.authenticated;
-    notifyListeners();
-    return true;
+      }
+      
+    ).catchError((e){
+      print('Error en $e');
+      NotificacionsService.showSnackError('Usuario / Password no validos');
+    });
 
   }
+
+
 
   register( String email, String password, String name ){
 
@@ -77,16 +74,55 @@ class AuthProvider extends ChangeNotifier{
         authStatus = AuthStatus.authenticated;
         LocalStorage.prefs.setString( 'token', authResponse.token );
         NavigationService.replaceTo(Flurorouter.dashboardRoute);
+
+        FlutterWebApi.configureDio;
+
         notifyListeners();
 
       }
       
     ).catchError((e){
       print('Error en $e');
-      //TODO: Mostrar notificacion de error
+      NotificacionsService.showSnackError('Usuario / Password no validos');
     });
 
+  }
 
+  Future<bool> isAutenticated()async{
+
+    final token = LocalStorage.prefs.getString('token');
+
+    if( token == null ){
+      authStatus = AuthStatus.notAuthenticated;
+      notifyListeners();
+      return false;
+    }
+
+    try{
+
+      final response = await FlutterWebApi.httpGet('/auth');
+      final authResponse = AuthResponse.fromMap(response);
+
+      this.user = authResponse.usuario;
+      authStatus = AuthStatus.authenticated;
+      notifyListeners();
+      return true;
+
+
+    }
+    catch(e){
+      print(e);
+      authStatus = AuthStatus.notAuthenticated;
+      notifyListeners();
+      return false;
+    }
+  }
+
+
+  logout(){
+    LocalStorage.prefs.remove('token');
+    authStatus = AuthStatus.notAuthenticated;
+    notifyListeners();
   }
 
 }
