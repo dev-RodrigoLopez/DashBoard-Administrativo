@@ -13,6 +13,7 @@ class DashboardView extends StatelessWidget {
     final user = Provider.of<AuthProvider>(context).user!;
 
     return Container(
+      padding: EdgeInsets.symmetric(  horizontal: 20, vertical: 10 ),
       child: Center(
         child: ListView(
           physics: ClampingScrollPhysics(),

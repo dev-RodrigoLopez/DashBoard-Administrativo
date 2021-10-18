@@ -46,11 +46,11 @@ class _DashboardLayoutState extends State<DashboardLayout> with SingleTickerProv
 
                     //Contenedor de nuestro view
                     Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(  horizontal: 20, vertical: 10 ),
+                      child: Container(
+                        // padding: EdgeInsets.symmetric(  horizontal: 20, vertical: 10 ),
                         child:  widget.child,
                       )
-                      )
+                    )
                   ],
                 ),
               )

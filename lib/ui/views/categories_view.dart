@@ -1,3 +1,4 @@
+import 'package:admin_dashboard/ui/modals/category_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,7 @@ class _CategoriesViewState extends State<CategoriesView> {
     final categorias = Provider.of<CategoriasProvider>(context).categorias;
 
     return Container(
+      padding: EdgeInsets.symmetric(  horizontal: 20, vertical: 10 ),
       child: Center(
         child: ListView(
           physics: ClampingScrollPhysics(),
@@ -47,7 +49,7 @@ class _CategoriesViewState extends State<CategoriesView> {
                 DataColumn(label: Text('Creado por')),
                 DataColumn(label: Text('Acciones')),
               ], 
-              source: CategoriesDTS( categorias ),
+              source: CategoriesDTS( categorias, context ),
               header: Text('Esta es la lista de todas las categorías disponibles', maxLines: 2),
               rowsPerPage: _rowsPerPage,
               onRowsPerPageChanged: (value){
@@ -57,7 +59,15 @@ class _CategoriesViewState extends State<CategoriesView> {
               },
               actions: [
                 CustomIconButtom(
-                  onPressed: (){},
+                  onPressed: (){
+
+                    showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      context: context, 
+                      builder: ( _ ) => CategoryModal( categoria: null )
+                    );
+
+                  },
                   text: 'Crear',
                   icon: Icons.add_outlined,
                 )

@@ -19,4 +19,25 @@ class CategoriasProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  Future newCategories(String name) async{
+
+    final data = {
+      'nombre': name
+    };
+
+    try{
+
+      final json = await FlutterWebApi.post('/categorias', data);
+      final newcategoria = Categoria.fromMap(json);
+
+      categorias.add( newcategoria );
+      notifyListeners();
+
+    }
+    catch(e){
+      print(e);
+    }
+
+  }
+
 }
