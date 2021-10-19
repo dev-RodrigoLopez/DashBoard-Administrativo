@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 class Sidebar extends StatelessWidget {
 
   void navigateTo( String routeName){
-    NavigationService.navigatoTo( routeName );
+    NavigationService.replaceTo( routeName );
     SideMenuPRovider.closeMenu();
   }
 

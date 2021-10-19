@@ -15,4 +15,12 @@ class NotificacionsService{
       
   }
 
+
+  static showSnack( String mensaje ){
+      final snackBar = new SnackBar(
+        content: Text( mensaje, style: TextStyle( color: Colors.white, fontSize: 20 ) )
+      );
+      messengerKey.currentState!.showSnackBar(snackBar);
+  }
+
 }

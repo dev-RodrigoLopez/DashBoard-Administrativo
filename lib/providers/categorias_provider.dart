@@ -35,9 +35,53 @@ class CategoriasProvider extends ChangeNotifier{
 
     }
     catch(e){
-      print(e);
+      throw 'Error al crear categoria';
     }
 
+  }
+
+
+  Future updateCategory(String name, String id) async{
+    final data = {
+      'nombre': name
+    };
+
+    try{
+
+      await FlutterWebApi.put('/categorias/$id', data);
+
+      this.categorias = this.categorias.map(
+        (category){
+          if ( category.id != id ) return category;
+
+          category.nombre = name;
+          return category;
+        }
+      ).toList();
+
+      notifyListeners();
+
+    }
+    catch(e){
+      throw 'Error al actualizar categoria';
+    }
+  }
+
+
+    Future deleteCategory( String id) async{
+
+    try{
+
+      await FlutterWebApi.delete('/categorias/$id', {});
+
+      categorias.removeWhere((categoria) => categoria.id == id);
+
+      notifyListeners();
+
+    }
+    catch(e){
+      print(e);
+    }
   }
 
 }

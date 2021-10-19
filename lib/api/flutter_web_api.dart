@@ -44,7 +44,39 @@ class FlutterWebApi {
     }
     catch(e){
       print(e);
-      throw('Error en el get');
+      throw('Error en el POST');
+    }
+  }
+
+  static Future put( String path, Map<String, dynamic> data ) async {
+
+    final formdata = FormData.fromMap(data);
+    try{
+
+      final resp = await _dio.put(path, data: formdata );
+
+      return resp.data;
+
+    }
+    catch(e){
+      print(e);
+      throw('Error en el PUT');
+    }
+  }
+
+    static Future delete( String path, Map<String, dynamic> data ) async {
+
+    final formdata = FormData.fromMap(data);
+    try{
+
+      final resp = await _dio.delete(path, data: formdata );
+
+      return resp.data;
+
+    }
+    catch(e){
+      print(e);
+      throw('Error en el DELETE');
     }
   }
 
