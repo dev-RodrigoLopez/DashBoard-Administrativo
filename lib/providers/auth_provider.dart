@@ -1,4 +1,4 @@
-import 'package:admin_dashboard/models/http/authresponse.dart';
+import 'package:admin_dashboard/models/usuario.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:admin_dashboard/api/flutter_web_api.dart';
@@ -8,6 +8,8 @@ import 'package:admin_dashboard/routes/router.dart';
 import 'package:admin_dashboard/services/local_storege.dart';
 import 'package:admin_dashboard/services/notifications_service.dart';
 import 'package:admin_dashboard/services/navigation_servide.dart';
+
+import 'package:admin_dashboard/models/http/authresponse.dart';
 
 enum AuthStatus{
   cheking,

@@ -6,6 +6,8 @@ import 'package:admin_dashboard/api/flutter_web_api.dart';
 import 'package:admin_dashboard/providers/auth_provider.dart';
 import 'package:admin_dashboard/providers/sidemenu_provider.dart';
 import 'package:admin_dashboard/providers/categorias_provider.dart';
+import 'package:admin_dashboard/providers/users_provider.dart';
+import 'package:admin_dashboard/providers/users_form_provider.dart';
 
 import 'package:admin_dashboard/routes/router.dart';
 
@@ -34,7 +36,9 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider( create: ( _ ) => AuthProvider(), lazy: false, ),
         ChangeNotifierProvider( create: ( _ ) => SideMenuPRovider(), lazy: false, ),
-        ChangeNotifierProvider( create: ( _ ) => CategoriasProvider() )
+        ChangeNotifierProvider( create: ( _ ) => CategoriasProvider() ),
+        ChangeNotifierProvider( create: ( _ ) => UsersProvider() ),
+        ChangeNotifierProvider( create: ( _ ) => UserFormProvider() ),
       ],
       child: MyApp(),
     );

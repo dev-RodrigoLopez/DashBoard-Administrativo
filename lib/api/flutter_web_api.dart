@@ -25,8 +25,8 @@ class FlutterWebApi {
       return resp.data;
 
     }
-    catch(e){
-      print(e);
+    on DioError catch(e){
+      print(e.response);
       throw('Error en el get');
     }
   }
@@ -42,8 +42,8 @@ class FlutterWebApi {
       return resp.data;
 
     }
-    catch(e){
-      print(e);
+    on DioError catch(e){
+      print(e.response);
       throw('Error en el POST');
     }
   }
@@ -58,7 +58,7 @@ class FlutterWebApi {
       return resp.data;
 
     }
-    catch(e){
+    on DioError catch(e){
       print(e);
       throw('Error en el PUT');
     }
@@ -74,7 +74,7 @@ class FlutterWebApi {
       return resp.data;
 
     }
-    catch(e){
+    on DioError catch(e){
       print(e);
       throw('Error en el DELETE');
     }
