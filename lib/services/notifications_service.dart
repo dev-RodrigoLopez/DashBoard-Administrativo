@@ -23,4 +23,20 @@ class NotificacionsService{
       messengerKey.currentState!.showSnackBar(snackBar);
   }
 
+  static showBusyIndicator( BuildContext context ){
+
+    final AlertDialog dialog = AlertDialog(
+      content: Container(
+        width: 100,
+        height: 100,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    );
+
+    showDialog(context: context, builder: ( _ ) => dialog);
+
+  }
+
 }

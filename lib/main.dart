@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:admin_dashboard/api/flutter_web_api.dart';
+import 'package:admin_dashboard/providers/providers.dart';
 
-import 'package:admin_dashboard/providers/auth_provider.dart';
-import 'package:admin_dashboard/providers/sidemenu_provider.dart';
-import 'package:admin_dashboard/providers/categorias_provider.dart';
-import 'package:admin_dashboard/providers/users_provider.dart';
-import 'package:admin_dashboard/providers/users_form_provider.dart';
+import 'package:admin_dashboard/api/flutter_web_api.dart';
 
 import 'package:admin_dashboard/routes/router.dart';
 

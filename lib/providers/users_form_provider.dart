@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:admin_dashboard/api/flutter_web_api.dart';
 import 'package:flutter/material.dart';
 
@@ -59,6 +61,22 @@ class UserFormProvider extends ChangeNotifier{
     catch(e){
       print('Error en UpdateUser');
       return false;
+    }
+
+  }
+
+  Future<Usuario> uploadImage( String path, Uint8List bytes ) async{
+
+    try{
+      final resp = await FlutterWebApi.UploadFile(path, bytes);
+      user = Usuario.fromMap(resp);
+      notifyListeners();
+
+      return user!;
+    }
+    catch(e){
+      print(e);
+      throw 'Error en user form Provider';
     }
 
   }

@@ -1,11 +1,9 @@
-import 'package:admin_dashboard/services/navigation_servide.dart';
-import 'package:admin_dashboard/services/notifications_service.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:provider/provider.dart';
 
 import 'package:admin_dashboard/models/usuario.dart';
-
-import 'package:provider/provider.dart';
 
 import 'package:admin_dashboard/providers/users_form_provider.dart';
 import 'package:admin_dashboard/providers/users_provider.dart';
@@ -14,6 +12,8 @@ import 'package:admin_dashboard/ui/cards/white_card.dart';
 import 'package:admin_dashboard/ui/inputs/custom_inputs.dart';
 import 'package:admin_dashboard/ui/labels/custom_label.dart';
 
+import 'package:admin_dashboard/services/navigation_servide.dart';
+import 'package:admin_dashboard/services/notifications_service.dart';
 
 class UserView extends StatefulWidget {
 
@@ -227,6 +227,10 @@ class _AvatarContainer extends StatelessWidget {
     final userProvider = Provider.of<UserFormProvider>(context);
     final user = userProvider.user!;
 
+    final image = ( user.img == null)
+      ? Image( image: AssetImage('no-image.jpg'))
+      : FadeInImage.assetNetwork(placeholder: 'loader.gif', image: user.img! );
+
     return WhiteCard(
       child: Container(
         width: double.infinity,
@@ -244,9 +248,7 @@ class _AvatarContainer extends StatelessWidget {
                 children: [
 
                   ClipOval(
-                    child: Image(
-                      image: AssetImage('no-image.jpg'),
-                    ),
+                    child: image
                   ),
 
                   Positioned(
@@ -263,7 +265,34 @@ class _AvatarContainer extends StatelessWidget {
                       child: FloatingActionButton(
                         backgroundColor: Colors.indigo,
                         child: Icon( Icons.camera_alt_outlined, size: 20),
-                        onPressed: (){},
+                        onPressed: () async{
+
+                          FilePickerResult? result = await FilePicker.platform.pickFiles(
+                            allowedExtensions: ['jpg', 'jpeg', 'png'],
+                            allowMultiple: false
+                            type: FileType.custom
+                          );
+
+                          if (result != null) {
+                            PlatformFile file = result.files.first;
+
+                            NotificacionsService.showBusyIndicator(context);
+
+                            // print(file.name);
+                            // print(file.bytes);
+                            // print(file.size);
+                            // print(file.extension);
+                            final newUser = await userProvider.uploadImage('/uploads/usuarios/${ user.uid}', file.bytes!);
+                            
+                            Provider.of<UsersProvider>(context, listen: false).refreshUser(newUser);
+
+                            Navigator.of(context).pop();
+
+                          } else {
+                            // User canceled the picker
+                          }
+
+                        },
                       )
                     ),
                   )

@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'package:admin_dashboard/services/local_storege.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
 
 class FlutterWebApi {
 
@@ -77,6 +79,22 @@ class FlutterWebApi {
     on DioError catch(e){
       print(e);
       throw('Error en el DELETE');
+    }
+  }
+
+
+    static Future UploadFile( String path, Uint8List bytes ) async {
+
+    final formdata = FormData.fromMap({
+      'archivo': MultipartFile.fromBytes(bytes)
+    });
+    try{
+      final resp = await _dio.put(path, data: formdata );
+      return resp.data;
+    }
+    on DioError catch(e){
+      print(e);
+      throw('Error en el UploadFile');
     }
   }
 
